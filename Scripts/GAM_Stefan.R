@@ -15,7 +15,7 @@ This allows for a more reliable interpretation of the relationship between weath
 
 #Creating subset
 
-zb_final <- read.csv("zentrahlbahn_final.csv", header = TRUE, stringsAsFactors = TRUE)
+zb_final <- read.csv("data/zentrahlbahn_final.csv", header = TRUE, stringsAsFactors = TRUE)
 
 ## Subset the data
 

@@ -1604,19 +1604,18 @@ cat("F1 Score:", F1_Score(preds_lin, actual, positive = "Luzern"), "\n")
 
 ### Model Evaluation Results
 
-The linear SVM model achieved a cross-validated accuracy of **60.3%** with **C = 1** as the optimal regularization parameter.
+The linear SVM model achieved an accuracy of **60.3%** on the balanced training data, with **C = 1** selected by cross-validation as the optimal regularization parameter.
 The ROC curve (Figure above) suggests the classifier performs only modestly better than random guessing (AUC ≈ 0.6), indicating limited discriminative power.
 
 Confusion Matrix Summary:
 
--   **Precision (Luzern)**: 0.374
--   **Recall (Luzern)**: 0.691
+-   **Precision (Luzern)**: 0.691
+-   **Recall (Luzern)**: 0.374
 -   **F1 Score (Luzern)**: 0.485
 -   **Balanced Accuracy**: 0.603
 
-While the recall is relatively strong, the model struggles with precision, meaning it often predicts Luzern when the true label is Other.
-This suggests that although the model catches most of the actual Luzern cases, it also mistakenly classifies many “Other” stations as Luzern.
-This misclassification behavior is expected due to the original class imbalance and overlapping features.
+The model is conservative: when it predicts Luzern it is right in about 69% of cases, but it only finds about 37% of the actual Luzern observations and assigns most of them to Other.
+This misclassification behavior is expected given the overlapping feature distributions of the stations.
 
 ### Feature Importance
 
@@ -1689,19 +1688,17 @@ svm_rbf_bin$bestTune
 
 ### Model Evaluation Results
 
-The radial SVM model achieved a cross-validated accuracy of 60.3%, with **C = 0.1** selected as the optimal cost parameter.
+The radial SVM model achieved an accuracy of 60.6% on the balanced training data, with **C = 0.1** selected as the optimal cost parameter.
 As with the linear model, the ROC curve (Figure above) indicates performance slightly above random chance, with a curve that remains close to the diagonal - suggesting modest discriminative power.
 
-The confusion matrix shows a reversal in the model's error profile compared to the linear version:
+The confusion matrix shows nearly the same error profile as the linear version:
 
--   **Precision (Luzern): 0.688**
--   **Recall (Luzern): 0.378**
--   **F1 Score (Luzern): 0.484**
--   **Balanced Accuracy: 0.603**
+-   **Precision (Luzern): 0.696**
+-   **Recall (Luzern): 0.375**
+-   **F1 Score (Luzern): 0.487**
+-   **Balanced Accuracy: 0.606**
 
-While precision is notably higher than in the linear model, recall has dropped substantially.
-This suggests the radial model is **more conservative** in predicting Luzern, reducing false positives at the cost of missing many true Luzern cases.
-Despite the change in decision boundary, the overall balanced accuracy remains nearly identical to the linear model, and the modest gain in precision does not clearly outweigh the loss in recall.
+Precision, recall and balanced accuracy are almost identical to the linear model, so the non-linear decision boundary adds little under the current feature set.
 Given the added computational cost and limited performance gain, the RBF kernel offers only marginal benefit under the current feature set.
 
 ## Model Comparison
@@ -1752,12 +1749,12 @@ legend("bottomright",
 # Manually defined values from prior evaluation
 auc_lin <- 0.629
 auc_rbf <- 0.644
-precision_lin <- 0.374
-recall_lin <- 0.691
+precision_lin <- 0.691
+recall_lin <- 0.374
 f1_lin <- 0.485
-precision_rbf <- 0.688
-recall_rbf <- 0.378
-f1_rbf <- 0.488
+precision_rbf <- 0.696
+recall_rbf <- 0.375
+f1_rbf <- 0.487
 
 # Construct the comparison table manually
 comparison <- data.frame(
@@ -1781,7 +1778,7 @@ knitr::include_graphics("final_documentation_files/plots/model-comparison-1.png"
 While this chapter focuses on classifying Luzern versus all other stations, the binary setup serves as a scalable case study.
 Luzern was chosen for its frequency and stability in the data, but the approach generalizes to other stations or multi-class scenarios via one-vs-rest classifiers—paving the way for broader imputation strategies across Zentralbahn’s records.
 
-The linear SVM yielded moderate performance, with high recall but low precision—reflecting overlapping feature distributions and limited class separability.
+The linear SVM yielded moderate performance, with reasonable precision but low recall—reflecting overlapping feature distributions and limited class separability.
 The near-diagonal ROC curve underscores the model’s constrained discriminative power.
 
 Compared to the linear kernel, the radial SVM offered marginal gains in AUC and F1 score but incurred significantly higher computation times.
@@ -1792,11 +1789,11 @@ Addressing these may involve richer feature engineering, applying non-linear mod
 
 ## Conclusion
 
-This analysis demonstrated how Support Vector Machines can be used to impute missing station names for the Swiss Federal Railways.
+This analysis demonstrated how Support Vector Machines can be used to impute missing station names for Zentralbahn.
 Initially formulated as a multi-class problem, the task was reformulated as a binary classification due to high class imbalance, overlapping distributions, and excessive runtime demands.
 
-The linear SVM model achieved a balanced accuracy of 60.3% and a recall of 69% for predicting Luzern.
-Although precision was relatively low, the model is effective for flagging likely Luzern observations, which could then be verified through business logic or downstream systems.
+The linear SVM model achieved a balanced accuracy of 60.3% and a precision of 69% for predicting Luzern.
+Although recall was low, observations it flags as Luzern are mostly correct, so its predictions could serve as candidates that are then verified through business logic or downstream systems.
 
 A comparison with a radial SVM showed slight metric improvements, but at the expense of computational cost.
 For production scenarios where interpretability and efficiency are paramount, the linear model offers a practical trade-off.

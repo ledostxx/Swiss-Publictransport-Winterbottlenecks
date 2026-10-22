@@ -8,19 +8,19 @@ stations <- list(
     name = "Engelberg", elevation = 1036,
     lat = 46.821639, lon = 8.410514,
     region = "Central Alpine north slope", canton = "OW",
-    file = "/Users/leonarddost/Downloads/Engelberg_weather_data.csv"
+    file = "data/raw/Engelberg_weather_data.csv"
   ),
   LUZ = list(
     name = "Luzern", elevation = 454,
     lat = 47.036439, lon = 8.301022,
     region = "Central plateau", canton = "LU",
-    file = "/Users/leonarddost/Downloads/Luzern_weather_data.csv"
+    file = "data/raw/Luzern_weather_data.csv"
   ),
   MER = list(
     name = "Meiringen", elevation = 589,
     lat = 46.732222, lon = 8.169247,
     region = "Western Alpine north slope", canton = "BE",
-    file = "/Users/leonarddost/Downloads/Meiringen_weather_data.csv"
+    file = "data/raw/Meiringen_weather_data.csv"
   )
 )
 

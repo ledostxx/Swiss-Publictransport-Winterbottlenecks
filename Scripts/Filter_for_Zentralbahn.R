@@ -2,7 +2,7 @@
 library(dplyr)
 
 ## Import dataset ----
-df <- read.csv("/Users/leonarddost/Downloads/ist-daten-2024-11(2)/2024-11-30_istdaten.csv", 
+df <- read.csv("data/raw/2024-11-30_istdaten.csv", 
                stringsAsFactors = FALSE, 
                sep = ";", 
                header = TRUE, 

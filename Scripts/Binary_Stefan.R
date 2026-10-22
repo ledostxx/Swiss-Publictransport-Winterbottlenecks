@@ -7,7 +7,7 @@ library(mgcv)
 library(caret)
 
 
-zb_final <- read.csv("zentrahlbahn_final.csv", header = TRUE, stringsAsFactors = TRUE)
+zb_final <- read.csv("data/zentrahlbahn_final.csv", header = TRUE, stringsAsFactors = TRUE)
 
 str (zb_final)
 
